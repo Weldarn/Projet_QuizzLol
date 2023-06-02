@@ -3,6 +3,7 @@
 <head>
     <title>League of Legends Quiz</title>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <video playsinline autoplay muted loop class="bgvid">
@@ -17,8 +18,14 @@
             <a href="indext.html"><button class="menu-btn" id="retour-btn">RETOUR</button></a>
         </div>
     </div>
-    <div class="menu_champion">
-            
+    <div class="menu_champion"></div>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modal-abilities"></div>
+            <div id="modal-stats" style="display: none;"></div>
+            <div id="modal-description"></div>
+        </div>
     </div>
     
     <script src="script.js"></script>

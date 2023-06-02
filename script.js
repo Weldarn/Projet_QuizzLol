@@ -1,14 +1,12 @@
 let version = "";
 
-// Récupérer la dernière version de l'API
 fetch('https://ddragon.leagueoflegends.com/api/versions.json')
   .then(response => response.json())
   .then(versions => {
-    version = versions[0];  // La première version de la liste est la plus récente
+    version = versions[0];  
     getChampionData();
   });
 
-// Fonction pour obtenir les données des champions
 function getChampionData() {
   let url = `http://ddragon.leagueoflegends.com/cdn/${version}/data/fr_FR/champion.json`;
 
@@ -17,8 +15,7 @@ function getChampionData() {
     .then(data => {
       let championsData = data.data;
       displayChampions(championsData);
-      
-      // Ajouter un événement d'écoute pour le champ de recherche après avoir obtenu les données des champions
+
       document.querySelector('#search').addEventListener('input', function() {
         filterChampions(championsData);
       });
@@ -26,7 +23,6 @@ function getChampionData() {
     .catch(error => console.error('Error:', error));
 }
 
-// Fonction pour afficher les champions
 function displayChampions(champions) {
   let menuChampion = document.querySelector('.menu_champion');
   menuChampion.innerHTML = '';
@@ -37,9 +33,8 @@ function displayChampions(champions) {
 
     imgElement.src = `http://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${champion.image.full}`;
       
-    // Ajoutez un écouteur d'événements de clic à chaque image
     imgElement.addEventListener('click', function() {
-        getChampionSpells(champion.id);  // Au lieu d'appeler displayAbilities directement, nous appelons getChampionSpells
+        getChampionSpells(champion.id);  
     });
 
     menuChampion.appendChild(imgElement);
@@ -53,52 +48,55 @@ function getChampionSpells(championId) {
     .then(response => response.json())
     .then(data => {
       let championData = data.data[championId];
-      displayAbilities(championData.spells);
+      displayAbilities(championData.spells, championData.passive);
     })
     .catch(error => console.error('Error:', error));
 }
 
-// Fonction pour afficher les capacités d'un champion dans le modal
-function displayAbilities(spells) {
+function displayAbilities(spells, passive) {
   let modalAbilities = document.querySelector('#modal-abilities');
-  modalAbilities.innerHTML = ''; // effacer le contenu actuel
-  
-  for (let spell of spells) {
-      let imgElement = document.createElement('img');
-      imgElement.src = `http://ddragon.leagueoflegends.com/cdn/${version}/img/spell/${spell.image.full}`;
-      
-      // Ajouter un écouteur d'événements de clic qui affiche la description de l'attaque
-      imgElement.addEventListener('click', function() {
-          displayAbilityDescription(spell.description);
-      });
+  modalAbilities.innerHTML = '';
 
-      modalAbilities.appendChild(imgElement);
+  let imgElementPassive = document.createElement('img');
+  imgElementPassive.src = `http://ddragon.leagueoflegends.com/cdn/${version}/img/passive/${passive.image.full}`;
+
+  imgElementPassive.addEventListener('click', function() {
+    displayAbilityDescription(`${passive.name} (Passif)`, passive.description);
+  });
+
+  modalAbilities.appendChild(imgElementPassive);
+
+  let abilityKeys = ['Q', 'W', 'E', 'R'];
+  for (let i = 0; i < spells.length; i++) {
+    let spell = spells[i];
+    let imgElement = document.createElement('img');
+    imgElement.src = `http://ddragon.leagueoflegends.com/cdn/${version}/img/spell/${spell.image.full}`;
+
+    imgElement.addEventListener('click', function() {
+      displayAbilityDescription(`${spell.name} (${abilityKeys[i]})`, spell.description);  // Ajoutez la touche à côté du nom de la compétence
+    });
+
+    modalAbilities.appendChild(imgElement);
   }
   
-  // Montrer le modal
   document.querySelector('#modal').style.display = "block";
 }
 
-// Fonction pour afficher la description d'une attaque
-function displayAbilityDescription(description) {
+function displayAbilityDescription(name, description) {
   let modalDescription = document.querySelector('#modal-description');
-  modalDescription.textContent = description;
+  modalDescription.innerHTML = `<h2>${name}</h2>${description}`;
 }
 
-// Lorsque l'utilisateur clique sur le bouton (x), fermez le modal
-document.querySelector('.close').addEventListener('click', function() {
-    document.querySelector('#modal').style.display = "none";
+document.querySelector('#modal').addEventListener('click', function(e) {
+  if (e.target == this) {
+    this.style.display = "none";
+  }
 });
 
-// Lorsque l'utilisateur clique n'importe où en dehors du modal, fermez le modal
-window.onclick = function(event) {
-  let modal = document.querySelector('#modal');
-  if (event.target == modal) {
-      modal.style.display = "none";
-  }
-}
+document.querySelector('.close').addEventListener('click', function() {
+  document.querySelector('#modal').style.display = "none";
+});
 
-// Fonction pour filtrer les champions en fonction de la recherche
 function filterChampions(champions) {
   let searchValue = document.querySelector('#search').value.toLowerCase();
   
@@ -113,4 +111,3 @@ function filterChampions(champions) {
   
   displayChampions(filteredChampions);
 }
-
