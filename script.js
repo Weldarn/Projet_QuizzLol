@@ -37,9 +37,46 @@ function displayChampions(champions) {
 
     imgElement.src = `http://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${champion.image.full}`;
       
+    // Ajoutez un écouteur d'événements de clic à chaque image
+    imgElement.addEventListener('click', function() {
+        getChampionSpells(champion.id);  // Au lieu d'appeler displayAbilities directement, nous appelons getChampionSpells
+    });
+
     menuChampion.appendChild(imgElement);
   }
 }
+
+function getChampionSpells(championId) {
+  let url = `http://ddragon.leagueoflegends.com/cdn/${version}/data/fr_FR/champion/${championId}.json`;
+
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      let championData = data.data[championId];
+      displayAbilities(championData.spells);
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+// Fonction pour afficher les capacités d'un champion dans le modal
+function displayAbilities(spells) {
+    let modalAbilities = document.querySelector('#modal-abilities');
+    modalAbilities.innerHTML = ''; // effacer le contenu actuel
+    
+    for (let spell of spells) {
+        let imgElement = document.createElement('img');
+        imgElement.src = `http://ddragon.leagueoflegends.com/cdn/${version}/img/spell/${spell.image.full}`;
+        modalAbilities.appendChild(imgElement);
+    }
+    
+    // Montrer le modal
+    document.querySelector('#modal').style.display = "block";
+}
+
+// Lorsque l'utilisateur clique sur le bouton (x), fermez le modal
+document.querySelector('.close').addEventListener('click', function() {
+    document.querySelector('#modal').style.display = "none";
+});
 
 // Fonction pour filtrer les champions en fonction de la recherche
 function filterChampions(champions) {
