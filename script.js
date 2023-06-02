@@ -60,23 +60,43 @@ function getChampionSpells(championId) {
 
 // Fonction pour afficher les capacités d'un champion dans le modal
 function displayAbilities(spells) {
-    let modalAbilities = document.querySelector('#modal-abilities');
-    modalAbilities.innerHTML = ''; // effacer le contenu actuel
-    
-    for (let spell of spells) {
-        let imgElement = document.createElement('img');
-        imgElement.src = `http://ddragon.leagueoflegends.com/cdn/${version}/img/spell/${spell.image.full}`;
-        modalAbilities.appendChild(imgElement);
-    }
-    
-    // Montrer le modal
-    document.querySelector('#modal').style.display = "block";
+  let modalAbilities = document.querySelector('#modal-abilities');
+  modalAbilities.innerHTML = ''; // effacer le contenu actuel
+  
+  for (let spell of spells) {
+      let imgElement = document.createElement('img');
+      imgElement.src = `http://ddragon.leagueoflegends.com/cdn/${version}/img/spell/${spell.image.full}`;
+      
+      // Ajouter un écouteur d'événements de clic qui affiche la description de l'attaque
+      imgElement.addEventListener('click', function() {
+          displayAbilityDescription(spell.description);
+      });
+
+      modalAbilities.appendChild(imgElement);
+  }
+  
+  // Montrer le modal
+  document.querySelector('#modal').style.display = "block";
+}
+
+// Fonction pour afficher la description d'une attaque
+function displayAbilityDescription(description) {
+  let modalDescription = document.querySelector('#modal-description');
+  modalDescription.textContent = description;
 }
 
 // Lorsque l'utilisateur clique sur le bouton (x), fermez le modal
 document.querySelector('.close').addEventListener('click', function() {
     document.querySelector('#modal').style.display = "none";
 });
+
+// Lorsque l'utilisateur clique n'importe où en dehors du modal, fermez le modal
+window.onclick = function(event) {
+  let modal = document.querySelector('#modal');
+  if (event.target == modal) {
+      modal.style.display = "none";
+  }
+}
 
 // Fonction pour filtrer les champions en fonction de la recherche
 function filterChampions(champions) {
