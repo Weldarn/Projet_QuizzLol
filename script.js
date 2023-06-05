@@ -1,113 +1,166 @@
 let version = "";
+let loreGlobal = "";
 
-fetch('https://ddragon.leagueoflegends.com/api/versions.json')
-  .then(response => response.json())
-  .then(versions => {
-    version = versions[0];  
-    getChampionData();
-  });
-
-function getChampionData() {
-  let url = `http://ddragon.leagueoflegends.com/cdn/${version}/data/fr_FR/champion.json`;
-
-  fetch(url)
+document.addEventListener("DOMContentLoaded", function() {
+  fetch('https://ddragon.leagueoflegends.com/api/versions.json')
     .then(response => response.json())
-    .then(data => {
-      let championsData = data.data;
-      displayChampions(championsData);
-
-      document.querySelector('#search').addEventListener('input', function() {
-        filterChampions(championsData);
-      });
-    })
-    .catch(error => console.error('Error:', error));
-}
-
-function displayChampions(champions) {
-  let menuChampion = document.querySelector('.menu_champion');
-  menuChampion.innerHTML = '';
-
-  for (let champ in champions) {
-    let champion = champions[champ];
-    let imgElement = document.createElement('img');
-
-    imgElement.src = `http://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${champion.image.full}`;
-      
-    imgElement.addEventListener('click', function() {
-        getChampionSpells(champion.id);  
+    .then(versions => {
+      version = versions[0];  
+      getChampionData();
     });
 
-    menuChampion.appendChild(imgElement);
+  function getChampionData() {
+    let url = `http://ddragon.leagueoflegends.com/cdn/${version}/data/fr_FR/champion.json`;
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        let championsData = data.data;
+        displayChampions(championsData);
+
+        document.querySelector('#search').addEventListener('input', function() {
+          filterChampions(championsData);
+        });
+      })
+      .catch(error => console.error('Error:', error));
   }
-}
 
-function getChampionSpells(championId) {
-  let url = `http://ddragon.leagueoflegends.com/cdn/${version}/data/fr_FR/champion/${championId}.json`;
+  function getChampionSpells(championId, blurb) {
+    let url = `http://ddragon.leagueoflegends.com/cdn/${version}/data/fr_FR/champion/${championId}.json`;
 
-  fetch(url)
+    fetch(url)
     .then(response => response.json())
     .then(data => {
       let championData = data.data[championId];
-      displayAbilities(championData.spells, championData.passive);
+      displayAbilities(championData.spells, championData.passive, blurb);
     })
     .catch(error => console.error('Error:', error));
 }
 
-function displayAbilities(spells, passive) {
-  let modalAbilities = document.querySelector('#modal-abilities');
-  modalAbilities.innerHTML = '';
+  function displayChampions(champions) {
+    let menuChampion = document.querySelector('.menu_champion');
+    menuChampion.innerHTML = '';
 
-  let imgElementPassive = document.createElement('img');
-  imgElementPassive.src = `http://ddragon.leagueoflegends.com/cdn/${version}/img/passive/${passive.image.full}`;
+    for (let champ in champions) {
+      let champion = champions[champ];
+      let imgElement = document.createElement('img');
 
-  imgElementPassive.addEventListener('click', function() {
-    displayAbilityDescription(`${passive.name} (Passif)`, passive.description);
-  });
+      imgElement.src = `http://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${champion.image.full}`;
 
-  modalAbilities.appendChild(imgElementPassive);
+      imgElement.addEventListener('click', function() {
+        getChampionSpells(champion.id, champion.blurb);
+        displayProfile(champion);
+        document.querySelector('#modal-abilities').style.display = 'none';
+        document.querySelector('#modal-profile').style.display = 'flex';
+        document.querySelector('#modal').style.display = 'block';
+        
+        document.querySelector('#abilities-btn').classList.remove('active');
+        document.querySelector('#profile-btn').classList.add('active');
+      });
 
-  let abilityKeys = ['Q', 'W', 'E', 'R'];
-  for (let i = 0; i < spells.length; i++) {
-    let spell = spells[i];
-    let imgElement = document.createElement('img');
-    imgElement.src = `http://ddragon.leagueoflegends.com/cdn/${version}/img/spell/${spell.image.full}`;
-
-    imgElement.addEventListener('click', function() {
-      displayAbilityDescription(`${spell.name} (${abilityKeys[i]})`, spell.description);  // Ajoutez la touche à côté du nom de la compétence
-    });
-
-    modalAbilities.appendChild(imgElement);
-  }
-  
-  document.querySelector('#modal').style.display = "block";
-}
-
-function displayAbilityDescription(name, description) {
-  let modalDescription = document.querySelector('#modal-description');
-  modalDescription.innerHTML = `<h2>${name}</h2>${description}`;
-}
-
-document.querySelector('#modal').addEventListener('click', function(e) {
-  if (e.target == this) {
-    this.style.display = "none";
-  }
-});
-
-document.querySelector('.close').addEventListener('click', function() {
-  document.querySelector('#modal').style.display = "none";
-});
-
-function filterChampions(champions) {
-  let searchValue = document.querySelector('#search').value.toLowerCase();
-  
-  let filteredChampions = {};
-  
-  for (let champ in champions) {
-    let champion = champions[champ];
-    if (champion.name.toLowerCase().startsWith(searchValue)) {
-      filteredChampions[champ] = champion;
+      menuChampion.appendChild(imgElement);
     }
   }
-  
-  displayChampions(filteredChampions);
-}
+
+  function displayProfile(champion) {
+    let profileElement = document.querySelector('#modal-profile');
+    let loreElement = document.querySelector('#modal-description');
+
+    profileElement.innerHTML = `
+      <div class="champion-profile">
+        <img src="http://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${champion.image.full}">
+        <h2>${champion.name}</h2>
+      </div>
+    `;
+
+    loreElement.innerHTML = `<p>${loreGlobal}</p>`;
+  }
+
+  function displayAbilities(spells, passive, lore) {
+    let modalAbilities = document.querySelector('#modal-abilities');
+    modalAbilities.innerHTML = '';
+
+    let imgElementPassive = document.createElement('img');
+    imgElementPassive.src = `http://ddragon.leagueoflegends.com/cdn/${version}/img/passive/${passive.image.full}`;
+
+    imgElementPassive.addEventListener('click', function() {
+      displayAbilityDescription(`${passive.name} (Passif)`, passive.description);
+    });
+
+    modalAbilities.appendChild(imgElementPassive);
+
+    let abilityKeys = ['Q', 'W', 'E', 'R'];
+    for (let i = 0; i < spells.length; i++) {
+      let spell = spells[i];
+      let imgElement = document.createElement('img');
+      imgElement.src = `http://ddragon.leagueoflegends.com/cdn/${version}/img/spell/${spell.id}.png`;
+
+      imgElement.addEventListener('click', function() {
+        displayAbilityDescription(`${spell.name} (${abilityKeys[i]})`, spell.description);
+      });
+
+      modalAbilities.appendChild(imgElement);
+    }
+
+    // Trigger click event to make passive active by default
+    imgElementPassive.click();
+
+    // Store the lore in the global variable
+    loreGlobal = lore;
+  }
+
+  function displayAbilityDescription(name, description) {
+    if (document.querySelector('#modal-abilities').style.display !== 'none') {
+      document.querySelector('#modal-description').innerHTML = `
+        <h2>${name}</h2>
+        <p>${description}</p>
+      `;
+    }
+  }
+
+  document.querySelector('#abilities-btn').addEventListener('click', function() {
+    document.querySelector('#modal-profile').style.display = 'none';
+    document.querySelector('#modal-abilities').style.display = 'flex';
+    document.querySelector('#profile-btn').classList.remove('active');
+    this.classList.add('active');
+  });
+
+  document.querySelector('#profile-btn').addEventListener('click', function() {
+    console.log('Profile button clicked, lore: ', loreGlobal);
+
+    document.querySelector('#modal-abilities').style.display = 'none';
+    document.querySelector('#modal-profile').style.display = 'flex';
+    document.querySelector('#abilities-btn').classList.remove('active');
+    this.classList.add('active');
+
+    // Display lore when profile button is clicked
+    document.querySelector('#modal-description').innerHTML = `<p>${loreGlobal}</p>`;
+  });
+
+  document.querySelector('#close-modal').addEventListener('click', function() {
+    document.querySelector('#modal').style.display = 'none';
+  });
+
+  function filterChampions(champions) {
+    let searchValue = document.querySelector('#search').value.toLowerCase();
+
+    let filteredChampions = {};
+
+    for (let champ in champions) {
+      let champion = champions[champ];
+
+      if (champion.name.toLowerCase().includes(searchValue)) {
+        filteredChampions[champ] = champion;
+      }
+    }
+
+    displayChampions(filteredChampions);
+  }
+});
+
+document.addEventListener('click', function(e) {
+  let modal = document.querySelector('#modal');
+  if (e.target === modal) {
+    modal.style.display = 'none';
+  }
+});
