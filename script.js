@@ -1,6 +1,6 @@
 let version = "";
 let loreGlobal = "";
-
+//
 document.addEventListener("DOMContentLoaded", function() {
   fetch('https://ddragon.leagueoflegends.com/api/versions.json')
     .then(response => response.json())
@@ -27,15 +27,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
   function getChampionSpells(championId, blurb) {
     let url = `http://ddragon.leagueoflegends.com/cdn/${version}/data/fr_FR/champion/${championId}.json`;
-
+  
     fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      let championData = data.data[championId];
-      displayAbilities(championData.spells, championData.passive, blurb);
-    })
-    .catch(error => console.error('Error:', error));
-}
+      .then(response => response.json())
+      .then(data => {
+        let championData = data.data[championId];
+        passiveGlobal = championData.passive; // Enregistrez le passif
+        displayAbilities(championData.spells, championData.passive, blurb);
+      })
+      .catch(error => console.error('Error:', error));
+  }
 
   function displayChampions(champions) {
     let menuChampion = document.querySelector('.menu_champion');
@@ -73,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
       </div>
     `;
 
-    loreElement.innerHTML = `<p>${loreGlobal}</p>`;
+    loreElement.innerHTML = `<p>${champion.blurb}</p>`;
   }
 
   function displayAbilities(spells, passive, lore) {
@@ -118,11 +119,15 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   }
 
+    // Dans le gestionnaire d'événements du bouton "Compétences", appelez displayAbilityDescription pour afficher la description du passif
   document.querySelector('#abilities-btn').addEventListener('click', function() {
     document.querySelector('#modal-profile').style.display = 'none';
     document.querySelector('#modal-abilities').style.display = 'flex';
     document.querySelector('#profile-btn').classList.remove('active');
     this.classList.add('active');
+
+    // Affichez la description du passif
+    displayAbilityDescription(`${passiveGlobal.name} (Passif)`, passiveGlobal.description);
   });
 
   document.querySelector('#profile-btn').addEventListener('click', function() {
@@ -149,7 +154,7 @@ document.addEventListener("DOMContentLoaded", function() {
     for (let champ in champions) {
       let champion = champions[champ];
 
-      if (champion.name.toLowerCase().includes(searchValue)) {
+      if (champion.name.toLowerCase().startsWith(searchValue)) {
         filteredChampions[champ] = champion;
       }
     }
