@@ -1,6 +1,7 @@
 let version = "";
 let loreGlobal = "";
-//
+let championsDataGlobal = {};
+
 document.addEventListener("DOMContentLoaded", function () {
   fetch("https://ddragon.leagueoflegends.com/api/versions.json")
     .then((response) => response.json())
@@ -16,14 +17,15 @@ document.addEventListener("DOMContentLoaded", function () {
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        let championsData = data.data;
-        displayChampions(championsData);
+        championsDataGlobal = data.data;
+        displayChampions(championsDataGlobal);
 
         document
           .querySelector("#search")
-          .addEventListener("input", function () {
-            filterChampions(championsData);
-          });
+          .addEventListener("input", filterChampions);
+        document
+          .querySelector("#class-select")
+          .addEventListener("change", filterChampions);
       })
       .catch((error) => console.error("Error:", error));
   }
@@ -166,15 +168,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function filterChampions(champions) {
+  function filterChampions() {
     let searchValue = document.querySelector("#search").value.toLowerCase();
+    let selectedClass = document.querySelector("#class-select").value;
 
     let filteredChampions = {};
 
-    for (let champ in champions) {
-      let champion = champions[champ];
+    for (let champ in championsDataGlobal) {
+      let champion = championsDataGlobal[champ];
 
-      if (champion.name.toLowerCase().startsWith(searchValue)) {
+      if (
+        champion.name.toLowerCase().startsWith(searchValue) &&
+        (selectedClass === "" || champion.tags.includes(selectedClass))
+      ) {
         filteredChampions[champ] = champion;
       }
     }
@@ -202,18 +208,13 @@ function filterChampionsByClass(selectedClass) {
     .then((response) => response.json())
     .then((data) => {
       let championsData = data.data;
+      displayChampions(championsData);
 
-      let filteredChampions = {};
+      document.querySelector("#search").addEventListener("input", function () {
+        filterChampions(championsData);
+      });
 
-      for (let champ in championsData) {
-        let champion = championsData[champ];
-
-        if (champion.tags.includes(selectedClass)) {
-          filteredChampions[champ] = champion;
-        }
-      }
-
-      displayChampions(filteredChampions);
+      filterChampions(championsData);
     })
     .catch((error) => console.error("Error:", error));
 }
@@ -238,7 +239,7 @@ document.querySelector("#close-modal").addEventListener("click", function () {
 document
   .querySelector("#class-select")
   .addEventListener("change", function (e) {
-    filterChampionsByClass(e.target.value);
+    filterChampions();
   });
 
 document.addEventListener("click", function (e) {

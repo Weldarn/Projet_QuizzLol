@@ -14,7 +14,7 @@ a{
     text-decoration: none;
 }
 body {
-    background: url('image/fond_menu.jpg') no-repeat center center fixed;
+    background: url('/image/fond_menu.jpg') no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -82,12 +82,22 @@ body {
 
 /*Page champions.html*/
 input[type="search"] {
-    width: 80%;
-    padding: 10%;
+    width: 40%;
+    padding: 5%;
     font-size: 18px;
+    margin-right: 20px;
     margin-bottom: 20px;
     border-radius: 5px;
     border: none;
+}
+
+input[type="class-select"] {
+    padding: 5%;
+}
+
+roles_filtre {
+    width: 20%;
+    padding: 5%;
 }
 
 .menu_champion {
