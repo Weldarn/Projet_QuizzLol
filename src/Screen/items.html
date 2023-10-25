@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" href="/style.css" />
   </head>
 
-  <body>
+  <body class="items-page">
     <div class="container_item">
       <div class="logo">
         <img
@@ -26,8 +26,12 @@
       </div>
     </div>
     <div class="menu_item"></div>
-
-    <div id="modal" class="modal"></div>
+    <div id="item-modal" class="modal">
+      <div class="modal-content">
+        <span id="close-item-modal" class="close">&times;</span>
+        <div id="item-profile" class="item-profile"></div>
+      </div>
+    </div>
 
     <script src="/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

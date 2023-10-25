@@ -99,6 +99,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  function displayItemProfile(item) {
+    let profileElement = document.querySelector("#item-profile");
+    profileElement.innerHTML = `
+    <div class="item-profile">
+      <img src='https://ddragon.leagueoflegends.com/cdn/${version}/img/item/${item.image.full}'>
+      <h2>${item.name}</h2>
+      <p>${item.description}</p>
+    </div>
+  `;
+    document.querySelector("#item-modal").style.display = "block";
+  }
+
   function displayProfile(champion) {
     let profileElement = document.querySelector("#modal-profile");
     let loreElement = document.querySelector("#modal-description");
@@ -202,6 +214,10 @@ document.addEventListener("DOMContentLoaded", function () {
         let imgElement = document.createElement("img");
         imgElement.src = `https://ddragon.leagueoflegends.com/cdn/${version}/img/item/${item.image.full}`;
 
+        imgElement.addEventListener("click", function () {
+          displayItemProfile(item);
+        });
+
         let nameElement = document.createElement("p");
         nameElement.textContent = item.name;
 
@@ -213,7 +229,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function populateItemsSelect() {
-    console.log("populateItemsSelect is called");
     let tagsSet = new Set();
     let tagsSelect = document.querySelector("#items_filtre");
 
@@ -264,9 +279,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     tagsSet.forEach(tag => {
-      console.log("Original Tag:", tag);
       let translatedTag = itemTagsTranslations[tag] || tag;
-      console.log("Translated Tag:", translatedTag);
       let option = document.createElement("option");
       option.value = tag;
       option.text = translatedTag;
@@ -336,6 +349,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  if (document.querySelector("#close-item-modal")) {
+    document.querySelector("#close-item-modal").addEventListener("click", function () {
+      if (document.querySelector("#item-modal")) {
+        document.querySelector("#item-modal").style.display = "none";
+      }
+    });
+  }
+
   if (document.querySelector("#class-select")) {
     document.querySelector("#class-select").addEventListener("change", function (e) {
       filterChampions();
@@ -347,5 +368,12 @@ document.addEventListener("DOMContentLoaded", function () {
     if (modal && e.target === modal) {
       modal.style.display = "none";
     }
-  })
+  });
+
+  document.addEventListener("click", function (e) {
+    let modal = document.querySelector("#item-modal");
+    if (modal && e.target === modal) {
+      modal.style.display = "none";
+    }
+  });
 });
