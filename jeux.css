@@ -1,0 +1,116 @@
+@font-face {
+    font-family: "Beaufort for LOL";
+    src: url("BeaufortForLoL-TTF/BeaufortforLOL-Bold.ttf");
+}
+
+@font-face {
+    font-family: "Spiegel";
+    src: url("Spiegel-TTF/Spiegel_TT_Regular.ttf");
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+h3 {
+    font-family: "Beaufort for LOL", sans-serif;
+}
+
+.bgvid {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    transform: translateX(-50%) translateY(-50%);
+    background: url('/image_video/arcade-animated-02.jpg') no-repeat;
+    background-size: cover;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.container {
+    position: relative;
+    max-width: 800px;
+    width: 100%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    z-index: 1;
+}
+
+.left-container {
+    text-align: left;
+}
+
+.difficulty-buttons {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#selectedDifficulty {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+#startButton {
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+#gameArea {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#championImage {
+    max-width: 100%;
+    height: auto;
+}
+
+#answerInput {
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+#submitAnswer {
+    margin-top: 10px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#feedback {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+#timer {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+.hidden {
+    display: none;
+}
