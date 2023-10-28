@@ -9,15 +9,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectedDifficulty = document.getElementById('selectedDifficulty');
     const rulesContainer = document.getElementById('rulesContainer');
     const gameContainer = document.getElementById('gameContainer');
+    const overlay = document.getElementById('overlay');
+    const overlayText = document.getElementById('overlayText');
+    const closeOverlay = document.getElementById('closeOverlay');
 
-    let champions = [];
+    let championsData = {};
     let currentChampion = null;
     let difficulty = 'facile';
-    let attempts = 0;
+    let attempts = 3;
     let timer = null;
     let timeRemaining = 60;
+    let score = 0;
+    let isGameOver = false;
+    let currentImageType = 'champion';
 
-    startButton.addEventListener('click', startGame);
+    startButton.addEventListener('click', () => {
+        if (isGameOver) {
+            resetGame();
+        }
+        startGame();
+    });
+
     submitAnswerButton.addEventListener('click', submitAnswer);
 
     easyButton.addEventListener('click', () => {
@@ -25,31 +37,114 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedDifficulty.textContent = 'Le mode de jeu est sur Facile';
     });
 
+    answerInput.addEventListener('keyup', function (event) {
+        if (event.key === 'Enter') {
+            submitAnswer();
+        }
+    });
+
     hardButton.addEventListener('click', () => {
         difficulty = 'difficile';
         selectedDifficulty.textContent = 'Le mode de jeu est sur Difficile';
     });
 
+    startButton.disabled = true;
+    fetchChampions();
+
+    closeOverlay.addEventListener('click', () => {
+        overlay.style.display = 'none';
+        if (isGameOver) {
+            resetGame();
+        }
+    });
+
     function fetchChampions() {
-        fetch('https://ddragon.leagueoflegends.com/cdn/13.21.1/data/en_US/champion.json')
+        fetch('https://ddragon.leagueoflegends.com/cdn/13.21.1/data/fr_FR/champion.json')
             .then(response => response.json())
             .then(data => {
-                champions = Object.values(data.data).map(champion => ({
-                    name: champion.id,
-                    image: `https://ddragon.leagueoflegends.com/cdn/13.21.1/img/champion/${champion.image.full}`
-                }));
-                nextChampion();
+                const championIds = Object.keys(data.data);
+                const championDetailsPromises = championIds.map(id =>
+                    fetch(`https://ddragon.leagueoflegends.com/cdn/13.21.1/data/fr_FR/champion/${id}.json`)
+                        .then(response => response.json())
+                        .then(championData => championData.data[id])
+                );
+                return Promise.all(championDetailsPromises);
             })
-            .catch(error => console.error('Error fetching champions:', error));
+            .then(champions => {
+                championsData = champions.reduce((acc, champion) => {
+                    acc[champion.id] = champion;
+                    return acc;
+                }, {});
+                startButton.disabled = false;
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des champions:', error);
+                startButton.disabled = true;
+            });
     }
 
+    function getRandomChampion() {
+        const championKeys = Object.keys(championsData);
+        const randomIndex = Math.floor(Math.random() * championKeys.length);
+        const randomChampionKey = championKeys[randomIndex];
+        return championsData[randomChampionKey];
+    }
+
+    function displayChampion(champion) {
+        if (difficulty === 'difficile') {
+            currentImageType = Math.random() < 0.5 ? 'champion' : 'spell';
+            console.log('Image Type:', currentImageType);
+        } else {
+            currentImageType = 'champion';
+        }
+
+        if (currentImageType === 'spell' && champion.spells && champion.spells.length > 0) {
+            const randomSpellIndex = Math.floor(Math.random() * champion.spells.length);
+            const spell = champion.spells[randomSpellIndex];
+            if (spell && spell.image && spell.image.full) {
+                championImage.src = `https://ddragon.leagueoflegends.com/cdn/13.21.1/img/spell/${spell.image.full}`;
+                console.log('Spell Image URL:', `https://ddragon.leagueoflegends.com/cdn/13.21.1/img/spell/${spell.image.full}`);
+                return;
+            } else {
+                console.error('Données de la compétence manquantes ou incorrectes:', spell);
+            }
+        }
+
+        if (champion.image && champion.image.full) {
+            championImage.src = `https://ddragon.leagueoflegends.com/cdn/13.21.1/img/champion/${champion.image.full}`;
+        } else {
+            console.error('Impossible d\'afficher le champion, données manquantes:', champion);
+        }
+    }
+
+
     function startGame() {
+        resetGame();
         timeRemaining = 60;
-        attempts = difficulty === 'facile' ? 3 : 1;
-        fetchChampions();
+        attempts = 3;
+        score = 0;
+        currentChampion = getRandomChampion();
+        displayChampion(currentChampion);
         startTimer();
         rulesContainer.classList.add('hidden');
         gameContainer.classList.remove('hidden');
+    }
+
+    function endGame(reason) {
+        if (isGameOver) return;
+        isGameOver = true;
+        clearInterval(timer);
+        let message = `Le temps est écoulé ! Votre score final est de ${score}.`;
+        if (reason === 'attempts') {
+            message = `Vous avez épuisé vos tentatives ! Votre score final est de ${score}. La réponse correcte était ${currentChampion.name}.`;
+        }
+        showResultOverlay(message);
+        setTimeout(() => {
+            if (isGameOver) {
+                rulesContainer.classList.remove('hidden');
+                gameContainer.classList.add('hidden');
+            }
+        }, 5000);
     }
 
     function startTimer() {
@@ -62,46 +157,49 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     }
 
-    function endGame() {
-        clearInterval(timer);
-        feedback.textContent = 'Le temps est écoulé ! Votre score final est : ' + attempts;
-        rulesContainer.classList.remove('hidden');
-        gameContainer.classList.add('hidden');
-    }
-
     function submitAnswer() {
         const userAnswer = answerInput.value.trim().toLowerCase();
         const correctAnswer = currentChampion.name.toLowerCase();
 
         if (userAnswer === correctAnswer) {
-            feedback.textContent = 'Correct ! Bien joué.';
-            attempts += 1;
+            feedback.textContent = '';
+            score += 1;
             nextChampion();
         } else {
-            if (difficulty === 'facile') {
-                attempts -= 1;
-                if (attempts <= 0) {
-                    feedback.textContent = 'Incorrect. Vous avez épuisé vos tentatives !';
-                    nextChampion();
-                } else {
-                    feedback.textContent = `Incorrect. Il vous reste ${attempts} tentatives.`;
-                }
+            attempts -= 1;
+            if (attempts <= 0) {
+                feedback.textContent = 'Incorrect. Vous avez épuisé vos tentatives !';
+                endGame('attempts');
             } else {
-                feedback.textContent = 'Incorrect. Vous avez épuisé votre tentative !';
-                nextChampion();
+                feedback.textContent = `Incorrect. Il vous reste ${attempts} tentatives.`;
             }
         }
+        answerInput.value = '';
     }
 
     function nextChampion() {
-        if (champions.length === 0) {
-            feedback.textContent = 'Chargement des champions... Veuillez patienter.';
-            return;
-        }
-
-        const randomIndex = Math.floor(Math.random() * champions.length);
-        currentChampion = champions[randomIndex];
-        championImage.src = currentChampion.image;
+        currentChampion = getRandomChampion();
+        displayChampion(currentChampion);
         answerInput.value = '';
+    }
+
+    function showResultOverlay(message) {
+        overlayText.textContent = message;
+        overlay.style.display = 'flex';
+    }
+
+    function resetGame() {
+        clearInterval(timer);
+        timeRemaining = 60;
+        attempts = 3;
+        score = 0;
+        isGameOver = false;
+
+        document.getElementById('timer').textContent = `Temps restant: ${timeRemaining}s`;
+        feedback.textContent = '';
+        overlay.style.display = 'none';
+
+        rulesContainer.classList.remove('hidden');
+        gameContainer.classList.add('hidden');
     }
 });

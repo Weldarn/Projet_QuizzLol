@@ -16,6 +16,17 @@ body {
 
 h3 {
     font-family: "Beaufort for LOL", sans-serif;
+    font-size: 28px;
+}
+
+h2 {
+    font-family: "Beaufort for LOL", sans-serif;
+    font-size: 28px;
+}
+
+p {
+    font-family: "Spiegel";
+    font-size: 18px;
 }
 
 .bgvid {
@@ -51,6 +62,11 @@ h3 {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
     z-index: 1;
+    
+}
+
+#gameContainer {
+    max-width: 600px;
 }
 
 .left-container {
@@ -58,18 +74,28 @@ h3 {
 }
 
 .difficulty-buttons {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.difficulty-buttons button {
+    padding: 10px 20px;
+    font-size: 18px;
+    width: 150px;
+    margin: 0 10px;
     margin-top: 20px;
+    margin-bottom: 10px;
+    cursor: pointer;
 }
 
 #selectedDifficulty {
     text-align: center;
-    font-size: 18px;
+    font-size: 25px;
     margin-top: 10px;
 }
 
 #startButton {
-    width: 100%;
+    width: 50%;
     padding: 10px;
     font-size: 18px;
     cursor: pointer;
@@ -107,10 +133,71 @@ h3 {
 }
 
 #timer {
-    margin-top: 20px;
-    font-size: 18px;
+    font-size: 24px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
 }
 
 .hidden {
     display: none;
+}
+
+#rules {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#rules-title {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+.rule-text {
+    margin-top: 0px;
+}
+
+.overlay {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+.overlay-content {
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+#closeOverlay {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#startButtonpo {
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+#backButton {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    font-size: 16px;
+    padding: 10px 20px;
+    
 }
