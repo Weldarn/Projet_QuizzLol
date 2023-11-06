@@ -68,7 +68,11 @@ body {
   align-items: center;
   gap: 20px;
   background: linear-gradient(to bottom right, #091428, #0a1428);
-  padding: 10%;
+  padding: 5%;
+  border-radius: 30px;
+  border: 3px solid #C89B3C;
+  max-width: 400px;
+  width: 80vw;
 }
 
 .menu a {
@@ -78,10 +82,50 @@ body {
 }
 
 .menu-btn {
-  padding: 10px 20px;
-  font-size: 20px;
+  flex-basis: auto;
+  flex-grow: 1;
+  flex-shrink: 1;
+
+  padding: 0.5em 1em;
+  font-size: calc(0.5em + 1vmin);
+  min-width: 120px;
+  max-width: 300px;
+  
   cursor: pointer;
+  text-align: center;
   font-family: "Beaufort for LOL", sans-serif;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0 10px;
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 600px) {
+  .menu-btn {
+    padding: 1em;
+    font-size: 3.5vw;
+    min-width: 150px;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1199px) {
+  .menu-btn {
+      padding: 0.8em;
+      font-size: 3vw;
+      min-width: 150px;
+    }
+}
+
+@media (min-width: 1200px) {
+  .menu-btn {
+    padding: 1.5em;
+    font-size: 24px;
+  }
 }
 
 .menu-btn img {
@@ -89,16 +133,83 @@ body {
   height: auto;
 }
 
+#champions-btn {
+  width: 100%;
+}
+
+.index-btn:hover,
+.index-btn:focus {
+  background-color: #ffffff;
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.3);
+}
+
 /*Page champions.html*/
 
-input[type="search"] {
+input[type="search"],
+#retour-btn {
   width: 40%;
-  padding: 5%;
+  padding: 1em;
+  font-size: 18px;
+  margin-bottom: 20px;
+  border-radius: 20px;
+  border: none;
+  background-color: #fff;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1);
+}
+
+input[type="search"] {
+  margin-right: 0;
+  overflow-x: auto;
+}
+
+#retour-btn {
+  width: 40%;
+  padding: 1em;
+  font-size: 18px;
+  border-radius: 20px;
+  margin-right: 0;
+  margin-left: 0;
+}
+
+select {
+  width: 40%;
+  padding: 1em;
   font-size: 18px;
   margin-right: 20px;
   margin-bottom: 20px;
-  border-radius: 5px;
+  border-radius: 20px;
   border: none;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1);
+  background-color: #fff;
+}
+
+.select-container {
+  position: relative;
+  display: inline-block;
+  width: 40%;
+}
+
+.select-container select {
+  width: 100%;
+  padding: 1em;
+  font-size: 18px;
+  border-radius: 20px;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  background-color: white;
+}
+
+.select-container i {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #C89B3C;
+  pointer-events: none;
 }
 
 .menu_champion {
@@ -107,6 +218,7 @@ input[type="search"] {
   gap: 20px;
   background: linear-gradient(to bottom right, #091428, #0a1428);
   padding: 10%;
+  padding-top: 5%;
 }
 
 .menu_champion img {

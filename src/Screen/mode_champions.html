@@ -1,62 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mode Champions</title>
+    <link rel="stylesheet" href="/jeux.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mode Champions</title>
-  <link rel="stylesheet" href="/jeux.css" />
-</head>
+  <body>
+    <video playsinline autoplay muted loop class="bgvid">
+      <source src="/image_video/arcade-animated-02.webm" type="video/webm" />
+    </video>
+    <div class="main-container">
+      <div class="container" id="rulesContainer">
+        <div id="rules-title">
+          <h3>League Of Quizz</h3>
+        </div>
 
-<body>
-  <video playsinline autoplay muted loop class="bgvid">
-    <source src="/image_video/arcade-animated-02.webm" type="video/webm" />
-  </video>
-  <div class="main-container">
-    <div class="container" id="rulesContainer">
-      <div id="rules-title">
-        <h3>League Of Quizz</h3>
-      </div>
+        <div id="rules">
+          <h2 class="rule-title">Facile</h2>
+          <p class="rule-text">
+            Dans le mode de jeu, le but est de trouver le nom des champions de
+            League of Legends à partir de leur image. <br />
+            Vous avez 3 essais.
+          </p>
 
-      <div id="rules">
-        <h2 class="rule-title">Facile</h2>
+          <h2 class="rule-title">Difficile</h2>
+          <p class="rule-text">
+            Dans le mode de jeu, le but est de trouver le nom des champions de
+            League of Legends à partir de leur image et/ou de leurs compétences.
+            <br />
+            Vous avez 3 essais.
+          </p>
+        </div>
 
-        <p class="rule-text">
-          Dans le mode de jeu, le but est de trouver le nom des champions de
-          League of Legends à partir de leur image. <br />
-          Vous avez 3 essais.
-        </p>
+        <div class="difficulty-buttons">
+          <button id="easyButton">Facile</button>
+          <button id="hardButton">Difficile</button>
+        </div>
+        <div id="selectedDifficulty">Le mode de jeu est sur Facile</div>
 
-        <h2 class="rule-title">Difficile</h2>
-
-        <p class="rule-text">
-          Dans le mode de jeu, le but est de trouver le nom des champions de
-          League of Legends à partir de leur image et/ou de leurs compétences.
-          <br />
-          Vous avez 3 essais.
-        </p>
-      </div>
-
-      <div class="difficulty-buttons">
-        <button id="easyButton">Facile</button>
-        <button id="hardButton">Difficile</button>
-      </div>
-      <div id="selectedDifficulty">Le mode de jeu est sur Facile</div>
-
-      <div id="startButtonpo">
-        <a href="/src/Screen/jouer.html">
-          <button id="backButton">Retour</button>
-        </a>
-        <button id="startButton">Jouer</button>
+        <div id="startButtonpo">
+          <a href="/src/Screen/jouer.html">
+            <button id="backButton">Retour</button>
+          </a>
+          <button id="startButton">Jouer</button>
+        </div>
       </div>
 
       <div class="container hidden" id="gameContainer">
         <div class="bottom-container">
           <div id="gameArea">
             <img src="" alt="Champion" id="championImage" />
-            <input type="text" id="answerInput" placeholder="Entrez le prénom du champion" />
-            <button id="submitAnswer">Soumettre</button>
+            <input
+              type="text"
+              id="answerInput"
+              placeholder="Entrez le prénom du champion"
+            />
+            <button id="submitAnswerButton">Soumettre</button>
             <div id="feedback"></div>
             <div id="timer"></div>
           </div>
@@ -71,6 +73,5 @@
       </div>
     </div>
     <script src="/script-jeux.js"></script>
-</body>
-
+  </body>
 </html>

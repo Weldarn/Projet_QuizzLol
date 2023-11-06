@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mode Items</title>
+    <link rel="stylesheet" href="/jeux.css" />
+  </head>
+
+  <body class="mode-item">
+    <video playsinline autoplay muted loop class="bgvid">
+      <source src="/image_video/arcade-animated-02.webm" type="video/webm" />
+    </video>
+    <div class="main-container">
+      <div class="container" id="rulesContainer">
+        <div id="rules-title">
+          <h3>League Of Quizz - Items</h3>
+        </div>
+
+        <div id="rules">
+          <p class="rule-text">
+            Dans ce mode de jeu, le but est de trouver le nom des items de
+            League of Legends à partir de leur image. <br />
+            Vous avez 3 essais.
+          </p>
+        </div>
+
+        <div id="startButtonpo">
+          <a href="/src/Screen/jouer.html">
+            <button id="backButton">Retour</button>
+          </a>
+          <button id="startButton">Jouer</button>
+        </div>
+      </div>
+
+      <div class="container hidden" id="gameContainer">
+        <div class="bottom-container">
+          <div id="gameArea">
+            <img src="" alt="Item" id="itemImage" />
+            <input
+              type="text"
+              id="answerInput"
+              placeholder="Entrez le nom de l'item"
+            />
+            <button id="submitAnswerButton">Soumettre</button>
+            <div id="feedback"></div>
+            <div id="timer"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="overlay" class="overlay hidden">
+      <div class="overlay-content">
+        <p id="overlayText"></p>
+        <button id="closeOverlay">OK</button>
+      </div>
+    </div>
+    <script src="/script.jeux-items.js"></script>
+  </body>
+</html>

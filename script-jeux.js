@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const startButton = document.getElementById('startButton');
-    const submitAnswerButton = document.getElementById('submitAnswer');
+    const submitAnswerButton = document.getElementById('submitAnswerButton');
     const answerInput = document.getElementById('answerInput');
     const feedback = document.getElementById('feedback');
     const championImage = document.getElementById('championImage');
@@ -112,6 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (champion.image && champion.image.full) {
             championImage.src = `https://ddragon.leagueoflegends.com/cdn/13.21.1/img/champion/${champion.image.full}`;
+            console.log('Image du champion:', championImage.src);
         } else {
             console.error('Impossible d\'afficher le champion, données manquantes:', champion);
         }
@@ -119,18 +120,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     function startGame() {
+        console.log('Démarrage du jeu');
         resetGame();
         timeRemaining = 60;
         attempts = 3;
         score = 0;
         currentChampion = getRandomChampion();
+        if (!currentChampion) {
+            console.error('Erreur : Impossible de récupérer un champion aléatoire.');
+            return;
+        }
         displayChampion(currentChampion);
         startTimer();
         rulesContainer.classList.add('hidden');
         gameContainer.classList.remove('hidden');
+        console.log('Jeu démarré');
     }
 
     function endGame(reason) {
+        console.log('Fin du jeu', reason);
         if (isGameOver) return;
         isGameOver = true;
         clearInterval(timer);

@@ -3,6 +3,10 @@
   <head>
     <title>League of Legends Quiz</title>
     <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    />
   </head>
   <body>
     <div class="container_champion">
@@ -16,9 +20,12 @@
 
       <div class="container_filtre_champion">
         <input type="search" id="search" placeholder="Chercher un champion" />
-        <select class="menu-btn" id="class-select">
-          <option value="">Rôles</option>
-        </select>
+        <div class="select-container">
+          <select class="menu-btn" id="class-select">
+            <option value="">Rôles</option>
+          </select>
+          <i class="fas fa-chevron-down"></i>
+        </div>
         <a href="/indext.html"
           ><button class="menu-btn" id="retour-btn">Retour</button></a
         >
