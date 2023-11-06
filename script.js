@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
         populateItemsSelect();
 
         document.querySelector("#search-items").addEventListener("input", filterItems);
-        document.querySelector("#items_filtre").addEventListener("change", filterItems);
+        document.querySelector("#items_filter").addEventListener("change", filterItems);
       })
       .catch((error) => console.error("Error:", error));
   }
@@ -230,7 +230,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function populateItemsSelect() {
     let tagsSet = new Set();
-    let tagsSelect = document.querySelector("#items_filtre");
+    let tagsSelect = document.querySelector("#items_filter");
 
     for (let itemId in itemsDataGlobal) {
       let item = itemsDataGlobal[itemId];
@@ -289,7 +289,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function filterItems() {
     let searchValue = document.querySelector("#search-items").value.toLowerCase();
-    let selectedTag = document.querySelector("#items_filtre").value;
+    let selectedTag = document.querySelector("#items_filter").value;
 
     let itemContainers = document.querySelectorAll(".menu_item .item-container");
     itemContainers.forEach(container => {
