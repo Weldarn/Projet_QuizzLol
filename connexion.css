@@ -1,0 +1,126 @@
+@font-face {
+    font-family: "Beaufort for LOL";
+    src: url("BeaufortForLoL-TTF/BeaufortforLOL-Bold.ttf");
+}
+
+@font-face {
+    font-family: "Spiegel";
+    src: url("Spiegel-TTF/Spiegel_TT_Regular.ttf");
+}
+
+a {
+    text-decoration: none;
+}
+
+h2 {
+    font-family: "Beaufort for LOL", sans-serif;
+}
+
+p {
+    font-family: "Spiegel", serif;
+}
+
+body,
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url("/image_video/animated-season2018.webm") no-repeat center center fixed;
+    background-size: cover;
+}
+
+.bgvid {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -100;
+    object-fit: cover;
+}
+
+.container {
+    width: 50vw;
+    max-width: 800px;
+    min-width: 300px;
+    height: auto;
+    padding: 2em;
+    background: rgba(9, 20, 40, 0.9);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    border: 3px solid #C89B3C;
+}
+
+.title-container {
+    text-align: center;
+    margin-bottom: 1em;
+}
+
+.title {
+    font-size: calc(40px + 2vmin);
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.input-container {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+    margin-bottom: 30px;
+}
+
+.input-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    color: #fff;
+    margin-bottom: 0.5em;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.5em;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    font-size: 1em;
+}
+
+.buttons {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1em;
+}
+
+button {
+    padding: 1em 1.5em;
+    border: none;
+    font-size: calc(8px + 1vmin);
+    border-radius: 4px;
+    background-color: #fff;
+    color: #000;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-align: center;
+}
+
+button:hover,
+button:focus {
+    background-color: #ffffff;
+    color: #000000;
+    transform: scale(1.1);
+}
