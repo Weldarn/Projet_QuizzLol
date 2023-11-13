@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>League Of Quizz - Inscription/Connexion</title>
+    <title>League Of Quizz - Connexion</title>
     <link rel="stylesheet" type="text/css" href="/connexion.css" />
   </head>
   <body>
@@ -14,26 +14,38 @@
       <div class="title-container">
         <h1 class="title">League Of Quizz</h1>
       </div>
-      <div class="input-container">
+      <form id="login-form" class="input-container">
         <div class="input-group">
-          <label for="email">Email :</label>
-          <input type="email" id="email" name="email" required />
+          <label for="login-username">Pseudo :</label>
+          <input
+            type="text"
+            id="login-username"
+            name="username"
+            required
+            autocomplete="username"
+          />
         </div>
         <div class="input-group">
-          <label for="password">Mdp :</label>
-          <input type="password" id="password" name="password" required />
+          <label for="login-password">Mot de passe :</label>
+          <input
+            type="password"
+            id="login-password"
+            name="password"
+            required=""
+            autocomplete="current-password"
+          />
         </div>
-      </div>
-      <div class="buttons">
-        <a href="/indext.html">
-          <button type="button" onclick="location.href='#connexion'">
-            Connexion
+        <div class="buttons">
+          <button type="submit">Connexion</button>
+          <button
+            type="button"
+            onclick="window.location.href='inscription.html'"
+          >
+            Inscription
           </button>
-        </a>
-        <a href="inscription.html">
-          <button type="button">Inscription</button>
-        </a>
-      </div>
+        </div>
+      </form>
     </div>
+    <script src="/script.user.js"></script>
   </body>
 </html>

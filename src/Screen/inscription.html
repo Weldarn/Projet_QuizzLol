@@ -14,33 +14,55 @@
       <div class="title-container">
         <h1 class="title">Inscription</h1>
       </div>
-      <div class="input-container">
-        <div class="input-group">
-          <label for="pseudo">Pseudo :</label>
-          <input type="text" id="pseudo" name="pseudo" required />
+      <form id="registration-form">
+        <div class="input-container">
+          <div class="input-group">
+            <label for="pseudo">Pseudo :</label>
+            <input
+              type="text"
+              id="pseudo"
+              name="pseudo"
+              required
+              autocomplete="username"
+            />
+          </div>
+          <div class="input-group">
+            <label for="password">Mdp :</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
+              autocomplete="new-password"
+            />
+            <span id="password-error" class="error-message"></span>
+          </div>
+          <div class="input-group">
+            <label for="confirm-password">Confirmation Mdp :</label>
+            <input
+              type="password"
+              id="confirm-password"
+              name="confirm-password"
+              required
+              autocomplete="new-password"
+            />
+          </div>
         </div>
-        <div class="input-group">
-          <label for="email">Email :</label>
-          <input type="email" id="email" name="email" required />
-        </div>
-        <div class="input-group">
-          <label for="password">Mdp :</label>
-          <input type="password" id="password" name="password" required />
-        </div>
-        <div class="input-group">
-          <label for="confirm-password">Confirmation Mdp :</label>
-          <input
-            type="password"
-            id="confirm-password"
-            name="confirm-password"
-            required
-          />
-        </div>
-      </div>
 
-      <div class="buttons">
-        <button type="button" id="inscription-button">S'inscrire</button>
+        <div class="buttons">
+          <a href="connexion.html" class="button-like-link" id="retour-button"
+            >Retour</a
+          >
+
+          <button type="submit" id="inscription-button">S'inscrire</button>
+        </div>
+      </form>
+    </div>
+    <div id="overlay" class="overlay" style="display: none">
+      <div id="overlay-message" class="overlay-message">
+        Inscription réussie !
       </div>
-  <script src="/script.user.js"></script>
-</body>
+    </div>
+    <script src="/script.user.js"></script>
+  </body>
 </html>

@@ -42,6 +42,14 @@ html {
     object-fit: cover;
 }
 
+#registration-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
 .container {
     width: 50vw;
     max-width: 800px;
@@ -58,6 +66,27 @@ html {
     position: relative;
     z-index: 1;
     border: 3px solid #C89B3C;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.overlay-message {
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
 }
 
 .title-container {
@@ -120,6 +149,26 @@ button {
 
 button:hover,
 button:focus {
+    background-color: #ffffff;
+    color: #000000;
+    transform: scale(1.1);
+}
+
+.button-like-link {
+    padding: 1em 1.5em;
+    border: none;
+    font-size: calc(8px + 1vmin);
+    border-radius: 4px;
+    background-color: #fff;
+    color: #000;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-align: center;
+    display: inline-block;
+}
+
+.button-like-link:hover,
+.button-like-link:focus {
     background-color: #ffffff;
     color: #000000;
     transform: scale(1.1);
