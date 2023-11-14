@@ -8,8 +8,13 @@
     <video playsinline autoplay muted loop class="bgvid">
       <source src="/image_video/fond_menu.jeux.webm" type="video/webm" />
     </video>
-    <div class="profil-btn-container">
-      <a href="/src/Screen/profil.html" class="menu-btn">Profil</a>
+    <div class="userprofil-btn-container">
+      <button id="userprofil-btn" class="menu-btn">Profil</button>
+    </div>
+    <div id="userprofil-modal" class="usermodal-profil">
+      <div class="usermodal-content-profil">
+        <p id="user-pseudo">Pseudo: <span id="pseudo-span"></span></p>
+      </div>
     </div>
     <div class="container">
       <div class="logo">
@@ -33,6 +38,7 @@
         >
       </div>
     </div>
+
     <script src="/script.js"></script>
   </body>
 </html>

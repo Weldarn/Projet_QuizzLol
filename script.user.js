@@ -86,6 +86,10 @@ function handleLogin(event) {
         })
         .then(data => {
             localStorage.setItem('token', data.token); // Stocker le jeton JWT
+            return fetchUserInfo(data.token); // Redirection vers index.html
+        })
+        .then(userInfo => {
+            localStorage.setItem('username', userInfo.username); // Stocker le pseudo de l'utilisateur
             window.location.href = '/indext.html'; // Redirection vers index.html
         })
         .catch(error => {
@@ -113,6 +117,17 @@ function closeOverlay() {
     overlay.style.display = 'none';
 }
 
+// Fonction pour récupérer les informations de l'utilisateur
+function fetchUserInfo(token) {
+    return fetch('http://127.0.0.1:8000/api/user_info', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        }
+    })
+        .then(response => response.json());
+}
 // Ajout des gestionnaires d'événements après le chargement du DOM
 document.addEventListener('DOMContentLoaded', function () {
     var registrationForm = document.getElementById('registration-form');

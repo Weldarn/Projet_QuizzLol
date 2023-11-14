@@ -305,6 +305,23 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  var btn = document.getElementById("userprofil-btn");
+  var modal = document.getElementById("userprofil-modal");
+  var username = localStorage.getItem('username');
+  if (username) {
+    document.getElementById('pseudo-span').textContent = username;
+  }
+
+  btn.onclick = function () {
+    modal.style.display = "block";
+  }
+
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+
   if (document.querySelector("#abilities-btn")) {
     document.querySelector("#abilities-btn").addEventListener("click", function () {
       if (document.querySelector("#modal-profile")) {
