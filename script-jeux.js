@@ -137,6 +137,29 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Jeu démarré');
     }
 
+    function sendScoreToServer(score, difficulty) {
+        const gameType = difficulty === 'facile' ? 'champion_easy' : 'champion_hard';
+        const data = {
+            gameType: gameType,
+            score: score
+        };
+
+        fetch('/api/update_score', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Score updated:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+
     function endGame(reason) {
         console.log('Fin du jeu', reason);
         if (isGameOver) return;
@@ -147,6 +170,8 @@ document.addEventListener('DOMContentLoaded', () => {
             message = `Vous avez épuisé vos tentatives ! Votre score final est de ${score}. La réponse correcte était ${currentChampion.name}.`;
         }
         showResultOverlay(message);
+        updateScoreOnServer();
+        sendScoreToServer(score, difficulty);
         setTimeout(() => {
             if (isGameOver) {
                 rulesContainer.classList.remove('hidden');
@@ -194,6 +219,21 @@ document.addEventListener('DOMContentLoaded', () => {
     function showResultOverlay(message) {
         overlayText.textContent = message;
         overlay.style.display = 'flex';
+    }
+
+    function updateScoreOnServer() {
+        const scoreData = difficulty === 'facile' ? { score_champion_easy: score } : { score_champion_hard: score };
+
+        fetch('/api/update_score', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(scoreData),
+        })
+            .then(response => response.json())
+            .then(data => console.log(data.message))
+            .catch(error => console.error('Erreur lors de la mise à jour du score:', error));
     }
 
     function resetGame() {
